@@ -1,1 +1,0 @@
-python sql_insert_pipeline_auto.py --user admin --password "test25**" --db-name customers_db --schema-name cs --sql-dir ../../data --delay 1.5 --port 5432
