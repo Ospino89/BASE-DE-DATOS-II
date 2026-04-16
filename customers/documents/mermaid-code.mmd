@@ -1,0 +1,95 @@
+---
+config:
+  theme: default
+---
+erDiagram
+  departments {
+    varchar code PK
+    varchar name
+  }
+  municipalities {
+    varchar code PK
+    varchar name
+    varchar department_code FK
+  }
+  categories {
+    int id PK
+    varchar name
+    timestamp created_at
+  }
+  products {
+    int id PK
+    varchar name
+    decimal usd_price
+    decimal cop_price
+    int category_id FK
+  }
+  payment_methods {
+    int id PK
+    varchar name
+    timestamp create_at
+  }
+  customers {
+    int id PK
+    varchar id_number UK
+    date birth_date
+    varchar phone_number
+    varchar name
+    varchar email
+    timestamp created_at
+  }
+  addresses {
+    int id PK
+    varchar customer_id_number FK
+    varchar municipality_code FK
+    varchar street
+    varchar detail
+    varchar postal_code
+    varchar additional_comments
+    timestamp created_at
+    timestamp updated_at
+  }
+  orders {
+    varchar id PK
+    varchar customer_id_number FK
+    timestamp order_date
+    decimal total
+    int payment_method_id FK
+  }
+  order_items {
+    int id PK
+    varchar order_id FK
+    int product_id FK
+    int quantity
+  }
+  ship_company {
+    int id PK
+    varchar name
+    varchar nit
+    varchar address
+    varchar phone
+    varchar email
+    timestamp created_at
+  }
+  shipment_orders {
+    varchar id PK
+    int ship_company_id FK
+    varchar order_id FK
+    varchar tracking_code
+    varchar status
+    timestamp shipped_at
+    timestamp delivered_at
+    timestamp created_at
+    timestamp updated_at
+  }
+
+  departments ||--o{ municipalities : "has"
+  categories ||--o{ products : "classifies"
+  customers ||--o{ addresses : "has"
+  municipalities ||--o{ addresses : "located in"
+  customers ||--o{ orders : "places"
+  payment_methods ||--o{ orders : "used in"
+  orders ||--o{ order_items : "contains"
+  products ||--o{ order_items : "included in"
+  ship_company ||--o{ shipment_orders : "handles"
+  orders ||--|| shipment_orders : "shipped via"
